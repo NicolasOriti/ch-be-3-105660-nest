@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
-import { UsersModule } from './users/users.module.js';
+import { appConfigModule } from './config/app-config.module.js';
+import {
+  CONTROLLERS,
+  USE_CASES,
+  DOMAIN_SERVICES,
+} from './app.module-components.js';
+import { PersistenceModule } from './infrastructure/persistence/persistence.module.js';
 
 @Module({
-  imports: [UsersModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [appConfigModule(), PersistenceModule.forRoot()],
+  controllers: [...CONTROLLERS],
+  providers: [...USE_CASES, ...DOMAIN_SERVICES],
 })
 export class AppModule {}
